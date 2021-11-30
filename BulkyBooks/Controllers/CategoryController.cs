@@ -1,23 +1,25 @@
-﻿using BulkyBooks.Data;
+﻿using BookList.Models;
+using BulkyBooks.Data;
 using BulkyBooks.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-//Request library
-using System.Net;
-using System.IO;
-using RestSharp;
-using RestSharp.Authenticators;
+using Newtonsoft.Json.Linq;
+using System.Dynamic;
 
 namespace BulkyBooks.Controllers
 {
     public class CategoryController : Controller
     {
         private readonly ApplicationDbContext _db;
+
+        //task creation for api call
+        private readonly HttpClient _Client = new HttpClient();
+
+        public async Task<string> GetAsync(string url)
+        {
+            var response = await _Client.GetAsync(url);
+            return await response.Content.ReadAsStringAsync();
+        }
 
         public CategoryController(ApplicationDbContext db)
         {
@@ -28,7 +30,42 @@ namespace BulkyBooks.Controllers
         {
             //   var objCategoryList = _db.Categories.ToList();
             IEnumerable<Category> objCategoryList = _db.Categories;
-            return View(objCategoryList);
+
+            dynamic Mymodel = new ExpandoObject();
+            Mymodel.Cat = objCategoryList;
+
+            //actual instance of api call, logged in console
+            var apiCall = GetAsync("https://www.officeapi.dev/api/quotes/random")
+                .ContinueWith(task =>
+                {
+                    Console.WriteLine(task.IsCompleted);
+
+                    // verify task.result and understand key/value pairs
+                    //JsonTextReader reader = new JsonTextReader(new StringReader(task.Result));
+                    //while (reader.Read())
+                    //{
+                    //    if (reader.Value != null)
+                    //    {
+                    //        Console.WriteLine("Token: {0}, Value: {1}", reader.TokenType, reader.Value);
+                    //
+                    //    }
+                    //    else
+                    //    {
+                    //        Console.WriteLine("Token: {0}", reader.TokenType);
+                    //    }
+                    //}
+                    // Console.WriteLine(task.Result.Length);
+
+                    // deserialize task and utilize rootobject model methods.
+                    var jsonDeserialized = JsonConvert.DeserializeObject<Rootobject>(task.Result);
+                    string result = jsonDeserialized.data.character.firstname + " " + jsonDeserialized.data.character.lastname;
+                    Console.WriteLine(result);
+                    Mymodel.Dog = result;
+                    return Task.CompletedTask;
+
+                });
+
+            return View(Mymodel);
         }
 
         //GET
@@ -55,7 +92,7 @@ namespace BulkyBooks.Controllers
             {
                 _db.Categories.Add(obj);
                 _db.SaveChanges();
-                TempData["success"] = "Category created successfully";
+                TempData["success"] = "Book created successfully";
                 return RedirectToAction("Index");
             }
             return View(obj);
@@ -95,7 +132,7 @@ namespace BulkyBooks.Controllers
             {
                 _db.Categories.Update(obj);
                 _db.SaveChanges();
-                TempData["success"] = "Category updated successfully";
+                TempData["success"] = "Book updated successfully";
                 return RedirectToAction("Index");
             }
             return View(obj);
@@ -132,7 +169,7 @@ namespace BulkyBooks.Controllers
 
             _db.Categories.Remove(obj);
             _db.SaveChanges();
-            TempData["success"] = "Category deleted successfully";
+            TempData["success"] = "Book deleted successfully";
             return RedirectToAction("Index");
 
         }
