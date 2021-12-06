@@ -7,25 +7,29 @@
 <!-- PROJECT LOGO -->
 <br />
 
-<div align="center">
-  <a href="https://github.com/jmcroft7/portfolio">
-    <img src="./images/logo.PNG" alt="Logo" width="400" height="225">
-  </a>
- </div>
- 
+
+
 <h3 align="center">BookList</h3>
 
 <p align="center">
-    A Booklist that lets you list and rate your books.
+    A C#/.NET Booklist that lets you list and rate your books.
 </p>
+
+![Preview](https://raw.githubusercontent.com/jmcroft7/BookList/master/BookList.PNG)
+
+<div align="center">
+
+<!-- Video Demo -->
+
+</div>
 
 <!-- ABOUT THE PROJECT -->
 
 ## About The Project
 
-<p> This is a C# and ASP.NET CRUD application. This implements Blazor and C# for the front-end, and C# .NET for the back-end. The goal of this project was to get familiar with the C# language and the .NET framework.
+<p>
+A C# and .NET 6 application that allows you to list and rate books. This implements C# for the front-end and back-end. The goal of this project was to get familiar with intermediate and advanced topics within the C# language.
 </p>
-
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -33,8 +37,8 @@
 
 - HTML5
 - C#
-- [ASP.NET](https://dotnet.microsoft.com/apps/aspnet)
-- [Bootstrap](https://getbootstrap.com/)
+- .NET 6
+- Bootstrap
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -42,9 +46,10 @@
 
 1. Clone the repo
    ```
-   git clone https://github.com/jmcroft7/BookList
+   git clone https://github.com/jmcroft7/BookList.git
    ```
-2. Open BookList.sln up in Visual Studio and run.
+
+2. Open `BookList.sln` in Visual Studio and run the solution.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
